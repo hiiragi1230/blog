@@ -1,5 +1,6 @@
 import { getPostBySlug, getAllSlugs } from "lib/api";
 import { extractText } from "lib/extract-text";
+import { prevNextPost } from "lib/prerv-next-post";
 import Meta from "components/meta";
 import Container from "components/container";
 import PostHeader from "components/post-header";
@@ -11,6 +12,7 @@ import {
 } from "components/two-column";
 import ConvertBody from "components/convert-body";
 import PostCategories from "components/post-categories";
+import Pagination from "components/pagination";
 import Image from "next/legacy/image";
 import { eyecatchLocal } from "lib/constants";
 import { getPlaiceholder } from "plaiceholder";
@@ -22,6 +24,8 @@ export default function Post({
   eyecatch,
   categories,
   description,
+  prevPost,
+  nextPost,
 }) {
   return (
     <Container>
@@ -37,6 +41,7 @@ export default function Post({
 
         <figure>
           <Image
+            key={eyecatch.url}
             src={eyecatch.url}
             alt=""
             layout="responsive"
@@ -58,6 +63,12 @@ export default function Post({
             <PostCategories categories={categories} />
           </TwoColumnSidebar>
         </TwoColumn>
+        <Pagination
+          prevText={prevPost.title}
+          prevUrl={`/blog/${prevPost.slug}`}
+          nextText={nextPost.title}
+          nextUrl={`/blog/${nextPost.slug}`}
+        />
       </article>
     </Container>
   );
@@ -73,7 +84,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const slug = "context.params.slug";
+  const slug = context.params.slug;
 
   const post = await getPostBySlug(slug);
 
@@ -84,6 +95,9 @@ export async function getStaticProps(context) {
   const { base64 } = await getPlaiceholder(eyecatch.url);
   eyecatch.blurDataURL = base64;
 
+  const allSlugs = await getAllSlugs();
+  const [prevPost, nextPost] = prevNextPost(allSlugs, slug);
+
   return {
     props: {
       title: post.title,
@@ -92,6 +106,8 @@ export async function getStaticProps(context) {
       eyecatch: eyecatch,
       categories: post.categories,
       description: description,
+      prevPost: prevPost,
+      nextPost: nextPost,
     },
   };
 }
