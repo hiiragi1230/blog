@@ -6,6 +6,7 @@ import Contact from "components/contact"
 import { TwoColumn,TwoColumnMain,TwoColumnSidebar } from "components/two-column"
 import Image from "next/legacy/image"
 import eyecatch from "images/about.jpg"
+import Accordion from 'components/accordion'
 
 export default function About(){
     return (
@@ -52,6 +53,25 @@ export default function About(){
             取り入れて、良いものを作れるようにしています。小さなヒントから新しいものを生み出すようなモノづ
             くりは、これからも続けていきたいです。
         </p>
+                        <h2>FAQ</h2>
+                        <Accordion heading="プログラミングのポイントについて">
+                            <p>
+                                プログラミングのポイントは、作りたいものを作ることです。楽しいことから思いつき、目標とゴールを決め、
+                                そこに向かってさまざまな課題を設定していきながら、プログラムを作っていきます
+                            </p>
+                        </Accordion>
+                        <Accordion heading="古代語の解読について">
+                            <p>
+                                古代語を解読するのに必要なのは、書かれた文字そのものだけです。古代の世界観や思考方法。
+                                それらを読み取ってこそ古代の世界観が理解できます。
+                            </p>
+                        </Accordion>
+                        <Accordion heading="公開レポジトリの活用について">
+                            <p>
+                                公開レポジトリを活用すると、全世界のどこからでもアクセスし、開発者が関連するプロジェクト
+                                のタスクを利用することができます。
+                            </p>
+                        </Accordion>
     </PostBody>
     </TwoColumnMain>
     <TwoColumnSidebar>
